@@ -3,7 +3,7 @@ import React from './React.js'
 const createRoot = (dom) => {
   return {
     render: function (App) {
-      React.render(App, dom)
+      React.render(App(), dom)
     }
   }
 }
