@@ -1,33 +1,5 @@
-
-const render = (el, pEl) => {
-  const dom = el.type === 'TEXT_ELEMENT'
-  ? document.createTextNode(el.props.value)
-  : document.createElement(el.type)
-
-  if (el.type !== 'TEXT_ELEMENT') {
-    Object.keys(el.props).forEach(key => {
-      if (key!=='children') {
-        dom[key] = el.props[key]
-      }
-    })
-  }
-
-  if(pEl !== null) {
-    pEl.append(dom)
-  }
-
-  el.props.children.forEach(child => {
-    render(child, dom)
-  })
-}
-
-const createRoot = (dom) => {
-  return {
-    render: function (App) {
-      render(App, dom)
-    }
-  }
-}
+import React from '../core/React.js'
+import ReactDOM from '../core/ReactDOM.js'
 
 
 const textEl = {
@@ -57,4 +29,4 @@ const container = {
   }
 }
 
-createRoot(document.getElementById('app')).render(container)
+ReactDOM.createRoot(document.getElementById('app')).render(container)
