@@ -9,6 +9,23 @@ export default function App() {
       <span style="color: red">hello</span>
       <span style="color: green">world</span>
       <button onclick={clickHandle}>click me</button>
+      <div>
+        hello
+        <div>
+          hello2
+          <div>
+            hello3
+            <span>hello4</span>
+            <span>hello5</span>
+            <div>
+              hello6
+              <span>hello7</span>
+              <span>hello8</span>
+
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
