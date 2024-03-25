@@ -24,6 +24,15 @@ const createTextVDom = (text) => {
   };
 };
 // 创建虚拟dom
+const parseChild = (child) => {
+  if (typeof child === 'object') {
+    return child
+  }
+  if (typeof child === 'function') {
+    return child()
+  }
+  return createTextVDom(child)
+}
 const createElement = (_type, _props, ..._children) => {
   if (typeof _type === 'function') {
     const functionDom = _type();
@@ -32,11 +41,10 @@ const createElement = (_type, _props, ..._children) => {
       props: {
         ...functionDom.props,
         children: functionDom.props.children ? functionDom.props.children.map((child) => {
-          return typeof child !== "object" ? createTextVDom(child) : child
+          return parseChild(child)
         }) : []
       }
     }
-    console.log(functionDom, vDom);
     return vDom;
   }
   return {
@@ -44,7 +52,7 @@ const createElement = (_type, _props, ..._children) => {
     props: {
       ..._props,
       children: _children.map((child) => {
-        return typeof child !== "object" ? createTextVDom(child) : child
+        return parseChild(child)
       }),
     },
   };
@@ -61,8 +69,9 @@ const workLoop = (deadLine) => {
   }
   if (!nextFiber) {
     container.append(rootFiber.dom);
+  } else {
+    requestIdleCallback(workLoop)
   }
-  requestIdleCallback(workLoop)
 }
 
 // 渲染一个dom,并处理好指针
