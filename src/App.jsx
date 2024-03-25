@@ -1,4 +1,5 @@
 import React from '../core/React'
+import Counter from './Counter'
 
 export default function App() {
   const clickHandle = () => {
@@ -6,7 +7,8 @@ export default function App() {
   }
   return (
     <div>
-      <span style="color: red">hello</span>
+      <Counter></Counter>
+      {/* <span style="color: red">hello</span>
       <span style="color: green">world</span>
       <button onclick={clickHandle}>click me</button>
       <div>
@@ -25,7 +27,7 @@ export default function App() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

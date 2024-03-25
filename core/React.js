@@ -1,11 +1,11 @@
 // 虚拟dom转真实dom
-const render = (vDom, container) => {
-  nextFiber = {
+let container = null;
+let rootFiber = null;
+const render = (vDom, _container) => {
+  container = _container
+  rootFiber = nextFiber = {
     type: vDom.type,
     props: vDom.props,
-    parent: {
-      dom: container
-    }
   }
   requestIdleCallback(workLoop)
 };
@@ -25,13 +25,26 @@ const createTextVDom = (text) => {
 };
 // 创建虚拟dom
 const createElement = (_type, _props, ..._children) => {
-  console.log(_type, _props, _children);
+  if (typeof _type === 'function') {
+    const functionDom = _type();
+    const vDom = {
+      type: functionDom.type,
+      props: {
+        ...functionDom.props,
+        children: functionDom.props.children ? functionDom.props.children.map((child) => {
+          return typeof child !== "object" ? createTextVDom(child) : child
+        }) : []
+      }
+    }
+    console.log(functionDom, vDom);
+    return vDom;
+  }
   return {
     type: _type,
     props: {
       ..._props,
       children: _children.map((child) => {
-        return typeof child === "string" ? createTextVDom(child) : child
+        return typeof child !== "object" ? createTextVDom(child) : child
       }),
     },
   };
@@ -45,6 +58,9 @@ const workLoop = (deadLine) => {
       break;
     }
     nextFiber = performFiber(nextFiber)
+  }
+  if (!nextFiber) {
+    container.append(rootFiber.dom);
   }
   requestIdleCallback(workLoop)
 }
